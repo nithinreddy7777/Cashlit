@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="{% url 'income' %}">Income</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">Add Income</li>
+    </ol>
+  </nav>
+
+  <div class="card">
+    <div class="card-body">
+      <form action="{% url 'add-income' %}" method="post">
+        {% include 'partials/_messages.html' %}
+        {% csrf_token %}
+
+        <div class="form-group mb-3">
+          <label for="amount">Amount</label>
+          <input
+            type="text"
+            class="form-control form-control-sm"
+            name="amount"
+            id="amount"
+            value="{{ values.amount }}"
+            required
+          />
+        </div>
+
+        <div class="form-group mb-3">
+          <label for="description">Description</label>
+          <input
+            type="text"
+            class="form-control form-control-sm"
+            name="description"
+            id="description"
+            value="{{ values.description }}"
+            required
+          />
+        </div>
+
+        <div class="form-group mb-3">
+          <label for="source">Source</label>
+          <select class="form-control" name="source" id="source" required>
+            <option disabled selected value="">Select a source</option>
+            {% for source in sources %}
+              <option value="{{ source.name }}" {% if values.source == source.name %}selected{% endif %}>
+                {{ source.name }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- New field for adding custom source -->
+        <div class="form-group mb-3">
+          <label for="new_source">Or Add New Source</label>
+          <input
+            type="text"
+            class="form-control form-control-sm"
+            name="new_source"
+            id="new_source"
+            value="{{ values.new_source }}"
+            placeholder="Enter new source"
+          />
+        </div>
+
+        <div class="form-group mb-3">
+          <label for="income_date">Date of Income</label>
+          <input
+            type="date"
+            class="form-control form-control-sm"
+            name="income_date"
+            id="income_date"
+            value="{{ values.income_date }}"
+            required
+          />
+        </div>
+
+        <input
+          type="submit"
+          value="Submit"
+          class="btn btn-primary btn-sm"
+        />
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
